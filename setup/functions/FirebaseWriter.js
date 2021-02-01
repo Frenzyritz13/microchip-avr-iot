@@ -23,18 +23,21 @@ class FirebaseWriter {
 
     // strip 'd' char added by IoT core from deviceId
     const deviceId = hdr.deviceId.slice(1); 
-
+    const time = Date.now();//-//
     // create ref locally for atomic push of two paths
-    const ref = this.admin.database().ref( '/avr-iot/' );
+//     const ref = this.admin.database().ref( '/avr-iot/' );
+    const ref = this.admin.database().ref( '/' );
     const newMsgRef = ref.push();
-    const newMsgKey = newMsgRef.key; 
+//     const newMsgKey = newMsgRef.key; 
     const updatedDeviceData = {}; 
 
     // path to record device data 
-    updatedDeviceData[`data/${deviceId}/${newMsgKey}`] = msg; 
+//     updatedDeviceData[`data/${deviceId}/${newMsgKey}`] = msg; 
+    updatedDeviceData[`${deviceId}/${time}`] = msg;//-//
 
     // path to track when device was last updated
-    updatedDeviceData[`lastUpdated/${deviceId}`] = msg.time; 
+//     updatedDeviceData[`lastUpdated/${deviceId}`] = msg.time; 
+    updatedDeviceData[`lastUpdated/${deviceId}`] = Object.assign({},{ time },msg);
     
     // send update to Firebase
     return ref.update(updatedDeviceData)
