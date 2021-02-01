@@ -21,8 +21,9 @@ exports.recordMessage = functions.pubsub.topic('avr-iot').onPublish((message) =>
       const hdr = message.attributes;
       let buff = new Buffer( message.data, 'base64' );
       let msg = JSON.parse( buff.toString('utf-8') );
-      const time = Date.now();
-      msg = Object.assign({}, msg, { time });
+      //-//const time = Date.now();
+      //-//msg = Object.assign({}, msg, { time });
+      msg = Object.assign({},msg);//-//
     
       return writer.record( msg, hdr )
     }
